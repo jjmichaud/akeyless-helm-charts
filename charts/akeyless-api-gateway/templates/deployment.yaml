@@ -30,6 +30,10 @@ spec:
       affinity:
       {{- toYaml .Values.deployment.affinity.data | nindent 8 }}
       {{- end }}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.podSecurityContext.fsGroup }}
+      {{- end }}
       {{- if .Values.deployment.securityContext }}
         {{- if .Values.deployment.securityContext.enabled }}
       securityContext:
@@ -121,6 +125,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           {{end}}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            runAsUser: {{ .Values.containerSecurityContext.runAsUser }}
+          {{- end }}
           ports:
             - name: web
               containerPort: 18888

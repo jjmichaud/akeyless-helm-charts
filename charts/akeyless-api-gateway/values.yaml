@@ -18,6 +18,24 @@ httpProxySettings:
   https_proxy: ""
   no_proxy: ""
 
+## Configure Pods Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+## @param podSecurityContext.enabled Enable pods' Security Context
+## @param podSecurityContext.fsGroup pods' group ID
+##
+podSecurityContext:
+  enabled: false
+  fsGroup: 0
+## Configure Container Security Context (only main container)
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+## @param containerSecurityContext.enabled Enable containers' Security Context
+## @param containerSecurityContext.runAsUser containers' Security Context
+##
+containerSecurityContext:
+  enabled: false
+  runAsUser: 0
+
+
 deployment:
   annotations: {}
   labels: {}
@@ -53,10 +71,7 @@ deployment:
   fips:
     enabled: false
 
-  securityContext:
-    enabled: false
-    fsGroup: 0
-    runAsUser: 0
+
 service:
   # Remove the {} and add any needed annotations regarding your LoadBalancer implementation
   annotations: {}
