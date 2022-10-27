@@ -30,12 +30,9 @@ spec:
       affinity:
       {{- toYaml .Values.deployment.affinity.data | nindent 8 }}
       {{- end }}
-      {{- if .Values.deployment.securityContext }}
-        {{- if .Values.deployment.securityContext.enabled }}
+      {{- if .Values.podSecurityContext.enabled }}
       securityContext:
-         runAsUser: {{ .Values.deployment.securityContext.runAsUser }}
-         fsGroup: {{ .Values.deployment.securityContext.fsGroup }}
-        {{- end }}
+        fsGroup: {{ .Values.podSecurityContext.fsGroup }}
       {{- end }}
       serviceAccountName: {{ template "akeyless-api-gw.getServiceAccountName" . }}
       {{- if .Values.deployment.nodeSelector }}
@@ -121,6 +118,10 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           {{end}}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.containerSecurityContext.enabled }}
+          securityContext:
+            runAsUser: {{ .Values.containerSecurityContext.runAsUser }}
+          {{- end }}
           ports:
             - name: web
               containerPort: 18888
